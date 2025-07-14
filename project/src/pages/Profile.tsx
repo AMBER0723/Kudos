@@ -14,19 +14,7 @@ export function Profile() {
   const [editData, setEditData] = useState({
     full_name: profile?.full_name || '',
     position: profile?.position || '',
-  })
-
-  // useEffect(() => {
-  //   if (profile) {
-  //     setEditData({
-  //       full_name: profile.full_name || '',
-  //       position: profile.position || '',
-  //     })
-  //      setIsEditing(true);
-  //   }
-  // }, [profile])
-
-
+  });
   const [compliments, setCompliments] = useState<any[]>([]) // or strongly type later
   const [complimentCount, setComplimentCount] = useState(0)
 
@@ -336,7 +324,7 @@ export function Profile() {
           </div>
         ) : (
           <div className="space-y-4">
-            {compliments.slice(0, 5).map((compliment, index) => (
+            {compliments.slice(0, 5).map((compliment) => (
               <div
                 key={compliment.id}
                 className="bg-gradient-to-r from-primary-50 to-purple-50 rounded-2xl p-6 border border-primary-100"

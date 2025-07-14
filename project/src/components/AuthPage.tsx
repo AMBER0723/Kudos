@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import {  Building2, Mail, User, Briefcase, Sparkles, Lock, Eye, EyeOff, AlertCircle, EggFried ,CheckCircle,ArrowLeft,Trophy } from 'lucide-react'
+import { Building2, Mail, User, Briefcase, Sparkles, Lock, Eye, EyeOff, AlertCircle, EggFried, CheckCircle, ArrowLeft } from 'lucide-react'
 import { useAuth } from '../hooks/useAuth'
 import { supabase } from '../lib/supabase'
 
@@ -14,9 +14,8 @@ export function AuthPage() {
   const [currentView, setCurrentView] = useState<'auth' | 'forgot-password' | 'reset-success'>('auth')
   const [isSignUp, setIsSignUp] = useState(false)
   const [resetEmail, setResetEmail] = useState('')
-  const [showPassword, setShowPassword] = useState(false)
-  const [loading, setLoading] = useState(false)
-  const [showVerifyNotice, setShowVerifyNotice] = useState(false)
+  const [showPassword, setShowPassword] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [organizations, setOrganizations] = useState<Organization[]>([])
   const [formData, setFormData] = useState({
     email: '',
@@ -72,11 +71,11 @@ export function AuthPage() {
         if (error) {
           throw error
         } else {
-          setShowVerifyNotice(true)
-          setTimeout(() => {
-            setShowVerifyNotice(false)
-          }, 5000) // Hide after 5 seconds
+          setSuccessMessage('Signup successful! Please check your email to verify your account.')
 
+          setTimeout(() => {
+            setSuccessMessage('')
+          }, 5000)
         }
       } else {
         const { error } = await signInWithEmail(formData.email, formData.password)
@@ -84,9 +83,12 @@ export function AuthPage() {
           setError('Incorrect password. Please check your password and try again.')
         }
       }
-    } catch (error: any) {
-      // console.log(setError(error.message || 'An unexpected error occurred'))
-    } finally {
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      }
+    }
+    finally {
       setLoading(false)
     }
   }
@@ -124,30 +126,30 @@ export function AuthPage() {
 
   }
 
-    const handleBackToLogin = () => {
+  const handleBackToLogin = () => {
     setCurrentView('auth')
     setResetEmail('')
     setError('')
     setSuccessMessage('')
   }
 
-    // Forgot Password View
+  // Forgot Password View
   if (currentView === 'forgot-password') {
     return (
-          <div className="min-h-screen bg-gradient-to-br from-primary-100 via-secondary-50 to-purple-100 flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Floating Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-20 h-20 bg-accent-300 rounded-full opacity-20 animate-float"></div>
-        <div className="absolute top-40 right-20 w-16 h-16 bg-primary-300 rounded-full opacity-30 animate-float" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute bottom-20 left-20 w-12 h-12 bg-purple-300 rounded-full opacity-25 animate-float" style={{ animationDelay: '4s' }}></div>
-        <div className="absolute bottom-40 right-10 w-24 h-24 bg-secondary-300 rounded-full opacity-20 animate-float" style={{ animationDelay: '1s' }}></div>
-      </div>
+      <div className="min-h-screen bg-gradient-to-br from-primary-100 via-secondary-50 to-purple-100 flex items-center justify-center p-4 relative overflow-hidden">
+        {/* Floating Elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-20 left-10 w-20 h-20 bg-accent-300 rounded-full opacity-20 animate-float"></div>
+          <div className="absolute top-40 right-20 w-16 h-16 bg-primary-300 rounded-full opacity-30 animate-float" style={{ animationDelay: '2s' }}></div>
+          <div className="absolute bottom-20 left-20 w-12 h-12 bg-purple-300 rounded-full opacity-25 animate-float" style={{ animationDelay: '4s' }}></div>
+          <div className="absolute bottom-40 right-10 w-24 h-24 bg-secondary-300 rounded-full opacity-20 animate-float" style={{ animationDelay: '1s' }}></div>
+        </div>
         <div className="max-w-md w-full">
           {/* Header */}
           <div className="text-center mb-8">
-           <div className="w-20 h-20 bg-gradient-to-r from-primary-500 to-purple-500 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-2xl animate-pulse-slow">
-            <EggFried className="w-10 h-10 text-white animate-wiggle" />
-          </div>
+            <div className="w-20 h-20 bg-gradient-to-r from-primary-500 to-purple-500 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-2xl animate-pulse-slow">
+              <EggFried className="w-10 h-10 text-white animate-wiggle" />
+            </div>
             <h1 className="text-3xl font-bold text-gray-900 mb-2">Reset Password</h1>
             <p className="text-gray-600">We'll send you a reset link</p>
           </div>
@@ -192,7 +194,7 @@ export function AuthPage() {
               <button
                 type="submit"
                 disabled={loading || !resetEmail.trim()}
-                              className="w-full bg-gradient-to-r from-primary-500 to-purple-500 text-white py-4 px-6 rounded-xl hover:from-primary-600 hover:to-purple-600 focus:ring-4 focus:ring-primary-200 transition-all duration-300 font-medium disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 shadow-lg"
+                className="w-full bg-gradient-to-r from-primary-500 to-purple-500 text-white py-4 px-6 rounded-xl hover:from-primary-600 hover:to-purple-600 focus:ring-4 focus:ring-primary-200 transition-all duration-300 font-medium disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 shadow-lg"
 
               >
                 {loading ? 'Sending...' : 'Send Reset Link'}
@@ -218,25 +220,25 @@ export function AuthPage() {
 
   // Reset Success View
   if (currentView === 'reset-success') {
-    return (        
-    <div className="min-h-screen bg-gradient-to-br from-primary-100 via-secondary-50 to-purple-100 flex items-center justify-center p-4 relative overflow-hidden">
-      {/* Floating Elements */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute top-20 left-10 w-20 h-20 bg-accent-300 rounded-full opacity-20 animate-float"></div>
-        <div className="absolute top-40 right-20 w-16 h-16 bg-primary-300 rounded-full opacity-30 animate-float" style={{ animationDelay: '2s' }}></div>
-        <div className="absolute bottom-20 left-20 w-12 h-12 bg-purple-300 rounded-full opacity-25 animate-float" style={{ animationDelay: '4s' }}></div>
-        <div className="absolute bottom-40 right-10 w-24 h-24 bg-secondary-300 rounded-full opacity-20 animate-float" style={{ animationDelay: '1s' }}></div>
-      </div>
+    return (
+      <div className="min-h-screen bg-gradient-to-br from-primary-100 via-secondary-50 to-purple-100 flex items-center justify-center p-4 relative overflow-hidden">
+        {/* Floating Elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-20 left-10 w-20 h-20 bg-accent-300 rounded-full opacity-20 animate-float"></div>
+          <div className="absolute top-40 right-20 w-16 h-16 bg-primary-300 rounded-full opacity-30 animate-float" style={{ animationDelay: '2s' }}></div>
+          <div className="absolute bottom-20 left-20 w-12 h-12 bg-purple-300 rounded-full opacity-25 animate-float" style={{ animationDelay: '4s' }}></div>
+          <div className="absolute bottom-40 right-10 w-24 h-24 bg-secondary-300 rounded-full opacity-20 animate-float" style={{ animationDelay: '1s' }}></div>
+        </div>
         <div className="max-w-md w-full">
           <div className="bg-white rounded-2xl shadow-xl p-8 text-center">
             <div className="w-16 h-16 bg-gradient-to-r from-green-500 to-green-600 rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-lg">
               <CheckCircle className="w-8 h-8 text-white" />
             </div>
-            
+
             <h1 className="text-2xl font-bold text-gray-900 mb-4">
               Check Your Email!
             </h1>
-            
+
             <p className="text-gray-600 mb-6 leading-relaxed">
               We've sent a password reset link to <strong>{resetEmail}</strong>
             </p>
@@ -254,12 +256,12 @@ export function AuthPage() {
             <div className="space-y-3">
               <button
                 onClick={handleBackToLogin}
-                              className="w-full bg-gradient-to-r from-primary-500 to-purple-500 text-white py-4 px-6 rounded-xl hover:from-primary-600 hover:to-purple-600 focus:ring-4 focus:ring-primary-200 transition-all duration-300 font-medium disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 shadow-lg"
+                className="w-full bg-gradient-to-r from-primary-500 to-purple-500 text-white py-4 px-6 rounded-xl hover:from-primary-600 hover:to-purple-600 focus:ring-4 focus:ring-primary-200 transition-all duration-300 font-medium disabled:opacity-50 disabled:cursor-not-allowed transform hover:scale-105 shadow-lg"
 
               >
                 Back to Login
               </button>
-              
+
               <button
                 onClick={() => {
                   setCurrentView('forgot-password')
@@ -312,8 +314,8 @@ export function AuthPage() {
                 type="button"
                 onClick={() => setIsSignUp(false)}
                 className={`flex-1 py-3 px-4 rounded-xl text-sm font-medium transition-all duration-300 ${!isSignUp
-                    ? 'bg-white text-gray-900 shadow-lg transform scale-105'
-                    : 'text-gray-500 hover:text-gray-700'
+                  ? 'bg-white text-gray-900 shadow-lg transform scale-105'
+                  : 'text-gray-500 hover:text-gray-700'
                   }`}
               >
                 Sign In
@@ -322,8 +324,8 @@ export function AuthPage() {
                 type="button"
                 onClick={() => setIsSignUp(true)}
                 className={`flex-1 py-3 px-4 rounded-xl text-sm font-medium transition-all duration-300 ${isSignUp
-                    ? 'bg-white text-gray-900 shadow-lg transform scale-105'
-                    : 'text-gray-500 hover:text-gray-700'
+                  ? 'bg-white text-gray-900 shadow-lg transform scale-105'
+                  : 'text-gray-500 hover:text-gray-700'
                   }`}
               >
                 Join Us
@@ -347,7 +349,7 @@ export function AuthPage() {
             </div>
           )}
 
-          {showVerifyNotice && (
+          {successMessage && (
             <div className="mt-6 bg-green-50 border-2 border-green-200 rounded-2xl p-4 animate-slide-up">
               <div className="flex items-center space-x-3">
                 <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center flex-shrink-0">
@@ -470,18 +472,18 @@ export function AuthPage() {
                 </button>
               </div>
             </div>
-             
-              {!isSignUp && (
-                <div className="text-right mt-2">
-                  <button
-                    type="button"
-                    onClick={() => setCurrentView('forgot-password')}
-                    className="text-sm text-primary-600 hover:text-primary-700"
-                  >
-                    Forgot password?
-                  </button>
-                </div>
-              )}
+
+            {!isSignUp && (
+              <div className="text-right mt-2">
+                <button
+                  type="button"
+                  onClick={() => setCurrentView('forgot-password')}
+                  className="text-sm text-primary-600 hover:text-primary-700"
+                >
+                  Forgot password?
+                </button>
+              </div>
+            )}
             <button
               type="submit"
               disabled={loading}
