@@ -290,101 +290,94 @@ export function Leaderboard() {
       </div>
 
       {/* Leaderboard */}
-      <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-xl overflow-hidden border border-white/20">
-        <div className="px-4 py-3 sm:px-6 sm:py-4 border-b border-gray-200 bg-gradient-to-r from-primary-50 to-purple-50">
-          <h2 className="text-xl font-bold text-gray-900 flex items-center space-x-2">
-            <Zap className="w-5 h-5 text-accent-500" />
-            <span>Top Stars - {getTimeFrameLabel()}</span>
-          </h2>
-        </div>
+  <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-xl overflow-hidden border border-white/20">
+  <div className="px-4 py-3 sm:px-6 sm:py-4 border-b border-gray-200 bg-gradient-to-r from-primary-50 to-purple-50">
+    <h2 className="text-xl font-bold text-gray-900 flex items-center space-x-2">
+      <Zap className="w-5 h-5 text-accent-500" />
+      <span>Top Stars - {getTimeFrameLabel()}</span>
+    </h2>
+  </div>
 
-        {loading ? (
-          <div className="p-12 text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
-            <p className="text-gray-500 text-lg">Loading the love...</p>
-          </div>
-        ) : (
-          <div className="divide-y divide-gray-100">
-            {leaderboardData.map((user, index) => (
-              <div
-                key={user.id}
-                className={`p-6 hover:bg-gradient-to-r hover:from-primary-50 hover:to-purple-50 transition-all duration-300 ${user.id === profile?.id ? 'bg-gradient-to-r from-primary-100 to-purple-100 border-l-4 border-primary-500' : ''
-                  } ${index < 3 ? 'bg-gradient-to-r from-yellow-50 to-orange-50' : ''}`}
-              >
-                <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-6">
-                  {/* Rank */}
-                  <div className="flex-shrink-0 flex flex-col items-center">
-                    {getRankIcon(index)}
-                    {index < 3 && (
-                      <div className={`mt-2 px-2 py-1 rounded-full text-xs font-bold ${getRankBadge(index)}`}>
-                        {index === 0 ? 'STAR' : index === 1 ? 'RISING' : 'LOVED'}
-                      </div>
-                    )}
+  {loading ? (
+    <div className="p-12 text-center">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-primary-600 mx-auto mb-4"></div>
+      <p className="text-gray-500 text-lg">Loading the love...</p>
+    </div>
+  ) : (
+    <div className="divide-y divide-gray-100">
+      {leaderboardData.map((user, index) => (
+        <div
+          key={user.id}
+          className={`p-6 transition-all duration-300 
+            ${user.id === profile?.id ? 'bg-gradient-to-r from-primary-100 to-purple-100 border-l-4 border-primary-500' : ''} 
+            ${index < 3 ? 'bg-gradient-to-r from-yellow-50 to-orange-50' : ''}
+            hover:bg-gradient-to-r hover:from-primary-50 hover:to-purple-50`}
+        >
+          <div className="flex flex-col sm:flex-row sm:justify-between gap-6">
+            {/* Left: Rank, Logo, Name & Message */}
+            <div className="flex items-start gap-4">
+              {/* Rank + Badge */}
+              <div className="flex flex-col items-center gap-1 mt-1">
+                {getRankIcon(index)}
+                {index < 3 && (
+                  <div className={`px-2 py-1 rounded-full text-xs font-bold ${getRankBadge(index)}`}>
+                    {index === 0 ? 'STAR' : index === 1 ? 'RISING' : 'LOVED'}
                   </div>
-
-                  {/* User Info */}
-                  <div className="flex-1 min-w-0">
-                    <div className="flex items-center space-x-4 mb-2">
-                      <div
-                        className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center text-white text-lg font-bold shadow-lg transform hover:scale-110 transition-all duration-300"
-                        style={{ backgroundColor: user.organization.color }}
-                      >
-                        {user.organization.short_code}
-                      </div>
-                      <div>
-                        <p className="text-xl font-bold text-gray-900 flex items-center space-x-2">
-                          <span>{user.full_name}</span>
-                          {user.id === profile?.id && (
-                            <span className="text-xs bg-gradient-to-r from-primary-500 to-purple-500 text-white px-3 py-1 rounded-full">
-                              That's You! 🎉
-                            </span>
-                          )}
-                          {index === 0 && <Crown className="w-5 h-5 text-yellow-500" />}
-                        </p>
-                        <p className="text-sm text-gray-600 font-medium">
-                          {user.position} • {user.organization.name}
-                        </p>
-                      </div>
-                    </div>
-
-                    {/* Recent Compliments */}
-                    {user.recent_compliments.length > 0 && (
-                      <div className="mt-4 bg-white/50 rounded-xl p-3 sm:p-4 border border-gray-100 text-sm sm:text-xs">
-                        <p className="text-xs text-gray-500 mb-2 font-medium flex items-center space-x-1">
-                          <span>Latest Tarif:</span>
-                          <span className="text-sm text-gray-700 leading-relaxed">
-                            {user.recent_compliments[0].message.slice(0, 20)}...
-                          </span>
-                        </p>
-                        <p className="text-xs text-gray-500 mt-2 flex items-center space-x-1">
-                          <span>—</span>
-                          <span className="font-medium">{user.recent_compliments[0].is_anonymous
-                            ? "Someone"
-                            : user.recent_compliments[0].from_user?.full_name}
-                          </span>
-                          <Snail className="w-3 h-3 text-red-400 " />
-                        </p>
-                      </div>
-                    )}
-                  </div>
-
-                  {/* Compliment Count */}
-                  <div className="text-center">
-                    <div className="bg-gradient-to-r from-primary-500 to-purple-500 text-white rounded-2xl p-4 shadow-lg">
-                      <p className="text-3xl font-bold">
-                        {user.compliment_count}
-                      </p>
-                      <p className="text-xs opacity-90">
-                        recognition{user.compliment_count !== 1 ? 's' : ''}
-                      </p>
-                    </div>
-                  </div>
-                </div>
+                )}
               </div>
-            ))}
+
+              {/* Logo + User Info */}
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center gap-3">
+                  <div
+                    className="w-10 h-10 flex items-center justify-center text-white text-lg font-bold rounded shadow"
+                    style={{ backgroundColor: user.organization.color }}
+                  >
+                    {user.organization.short_code}
+                  </div>
+                  <p className="text-lg font-bold text-gray-900 flex items-center gap-2">
+                    {user.full_name}
+                    {user.id === profile?.id && (
+                      <span className="text-xs bg-gradient-to-r from-primary-500 to-purple-500 text-white px-2 py-0.5 rounded-full">
+                        That's You! 🎉
+                      </span>
+                    )}
+                    {index === 0 && <Crown className="w-4 h-4 text-yellow-500" />}
+                  </p>
+                </div>
+                <p className="text-sm text-gray-600">{user.position} • {user.organization.name}</p>
+
+                {/* Message */}
+                {user.recent_compliments.length > 0 && (
+                  <div className="text-sm text-gray-800 bg-white/60 rounded-lg px-3 py-2 mt-2 border border-gray-100 shadow-sm max-w-xs sm:max-w-md">
+                    <p className="italic leading-tight">
+                      “{user.recent_compliments[0].message.slice(0, 50)}...”
+                    </p>
+                    <p className="text-xs text-gray-500 mt-1 flex items-center gap-1">
+                      — {user.recent_compliments[0].is_anonymous
+                        ? 'Someone'
+                        : user.recent_compliments[0].from_user?.full_name}
+                      <Snail className="w-3 h-3 text-red-400" />
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+            {/* Right: Recognition Count */}
+            <div className="text-center sm:text-right">
+              <div className="bg-gradient-to-r from-primary-500 to-purple-500 text-white rounded-2xl px-4 py-3 shadow-lg">
+                <p className="text-2xl font-bold">{user.compliment_count}</p>
+                <p className="text-xs">recognition{user.compliment_count !== 1 ? 's' : ''}</p>
+              </div>
+            </div>
           </div>
-        )}
-      </div>
+        </div>
+      ))}
+    </div>
+  )}
+</div>
+
     </div>
   )
 }
