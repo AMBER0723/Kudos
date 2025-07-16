@@ -131,27 +131,64 @@ export function useAuth() {
     }
   }
 
+  
+
+  // const signUpWithEmail = async (
+  //   email: string,
+  //   password: string,
+  //   userData: {
+  //     full_name: string
+  //     organization_id: string
+  //     position: string
+  //   }
+  // ) => {
+  //   try {
+  //     setLoading(true)
+  //     const { data, error } = await supabase.auth.signUp({ email, password })
+  //     // console.log('Sign up response:', { data, error })
+  //     if (!error && data.user) {
+  //       localStorage.setItem('user_profile_draft', JSON.stringify(userData))
+  //     }
+  //     return { data, error }
+  //   } finally {
+  //     setLoading(false)
+  //   }
+  // }
+
   const signUpWithEmail = async (
-    email: string,
-    password: string,
-    userData: {
-      full_name: string
-      organization_id: string
-      position: string
-    }
-  ) => {
-    try {
-      setLoading(true)
-      const { data, error } = await supabase.auth.signUp({ email, password })
-      // console.log('Sign up response:', { data, error })
-      if (!error && data.user) {
-        localStorage.setItem('user_profile_draft', JSON.stringify(userData))
-      }
-      return { data, error }
-    } finally {
-      setLoading(false)
-    }
+  email: string,
+  password: string,
+  userData: {
+    full_name: string
+    organization_id: string
+    position: string
   }
+) => {
+  try {
+    setLoading(true)
+
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {
+          full_name: userData.full_name,
+          organization_id: userData.organization_id,
+          position: userData.position,
+        },
+      },
+    })
+
+    // Optional: keep the localStorage backup
+    if (!error && data.user) {
+      localStorage.setItem('user_profile_draft', JSON.stringify(userData))
+    }
+
+    return { data, error }
+  } finally {
+    setLoading(false)
+  }
+}
 
 
   const signOut = async () => {

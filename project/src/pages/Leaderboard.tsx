@@ -291,7 +291,7 @@ export function Leaderboard() {
 
       {/* Leaderboard */}
       <div className="bg-white/80 backdrop-blur-lg rounded-3xl shadow-xl overflow-hidden border border-white/20">
-        <div className="px-6 py-4 border-b border-gray-200 bg-gradient-to-r from-primary-50 to-purple-50">
+        <div className="px-4 py-3 sm:px-6 sm:py-4 border-b border-gray-200 bg-gradient-to-r from-primary-50 to-purple-50">
           <h2 className="text-xl font-bold text-gray-900 flex items-center space-x-2">
             <Zap className="w-5 h-5 text-accent-500" />
             <span>Top Stars - {getTimeFrameLabel()}</span>
@@ -311,7 +311,7 @@ export function Leaderboard() {
                 className={`p-6 hover:bg-gradient-to-r hover:from-primary-50 hover:to-purple-50 transition-all duration-300 ${user.id === profile?.id ? 'bg-gradient-to-r from-primary-100 to-purple-100 border-l-4 border-primary-500' : ''
                   } ${index < 3 ? 'bg-gradient-to-r from-yellow-50 to-orange-50' : ''}`}
               >
-                <div className="flex items-center space-x-6">
+                <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-4 sm:space-y-0 sm:space-x-6">
                   {/* Rank */}
                   <div className="flex-shrink-0 flex flex-col items-center">
                     {getRankIcon(index)}
@@ -326,7 +326,7 @@ export function Leaderboard() {
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center space-x-4 mb-2">
                       <div
-                        className="w-12 h-12 rounded-2xl flex items-center justify-center text-white text-lg font-bold shadow-lg transform hover:scale-110 transition-all duration-300"
+                        className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center text-white text-lg font-bold shadow-lg transform hover:scale-110 transition-all duration-300"
                         style={{ backgroundColor: user.organization.color }}
                       >
                         {user.organization.short_code}
@@ -349,7 +349,7 @@ export function Leaderboard() {
 
                     {/* Recent Compliments */}
                     {user.recent_compliments.length > 0 && (
-                      <div className="mt-4 bg-white/50 rounded-2xl p-4 border border-gray-100">
+                      <div className="mt-4 bg-white/50 rounded-xl p-3 sm:p-4 border border-gray-100 text-sm sm:text-xs">
                         <p className="text-xs text-gray-500 mb-2 font-medium flex items-center space-x-1">
                           <span>Latest Tarif:</span>
                           <span className="text-sm text-gray-700 leading-relaxed">

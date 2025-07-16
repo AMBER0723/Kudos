@@ -68,6 +68,8 @@ export function AuthPage() {
           }
         )
 
+        
+
         if (error) {
           throw error
         } else {
